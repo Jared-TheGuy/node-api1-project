@@ -92,4 +92,25 @@ server.put('/api/users/:id', async (req, res) => {
     }
 })
 
+server.delete('/api/users/:id', async(req, res) => {
+    const { id } = req.params
+    try {
+        const updated = await Users.remove(id)
+        if (!updated) {
+            res.status(400).json({
+                message: `${id} is not a valid user`
+            })
+        }
+        else {
+            res.json(updated)
+        }
+    }
+    catch (err) {
+        res.status(500).json({
+            message: "something bad happened",
+            error: err.message
+        })
+    }
+})
+
 module.exports = server; // EXPORT YOUR SERVER instead of {}
