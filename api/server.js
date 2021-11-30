@@ -28,4 +28,25 @@ server.get('/api/users', async (req, res) => {
     }
 })
 
+server.get('/api/users/:id', async (req, res) => {
+    const { id } = req.params
+    try {
+        const user = await Users.findById(id)
+        if (!user) {
+            res.status(404).json({
+                message: `${id} is not a valid user`
+            })
+        }
+        else {
+            res.json({user})
+        }
+    }
+    catch (err) {
+        res.status(500).json({
+            message: "something bad happened",
+            error: err.message
+        })
+    }
+})
+
 module.exports = server; // EXPORT YOUR SERVER instead of {}
