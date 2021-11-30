@@ -27,7 +27,7 @@ server.get('/api/users/:id', async (req, res) => {
             res.status(404).json({ message: "The user with the specified ID does not exist" })
         }
         else {
-            res.json({user})
+            res.json(user)
         }
     }
     catch (err) {
@@ -57,10 +57,15 @@ server.put('/api/users/:id', async (req, res) => {
     try {
         const updated = await Users.update(id,body)
         if (!updated) {
-            res.status(404).json({ message: "Please provide name and bio for the user" })
+            res.status(404).json({ message: "The user with the specified ID does not exist" })
         }
         else {
+            if (!body.name || !body.bio) {
+                res.status(400).json({ message: "Please provide name and bio for the user" })
+            }
+            else {
             res.json(updated)
+            }
         }
     }
     catch (err) {
