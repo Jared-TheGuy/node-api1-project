@@ -49,4 +49,24 @@ server.get('/api/users/:id', async (req, res) => {
     }
 })
 
+server.post('/api/users', async (req, res) => {
+    try {
+        if (!req.body.name || !req.body.bio) {
+            res.status(400).json({
+                message: 'name and bio are required'
+            })
+        }
+        else {
+            const newUser = await Users.insert(req.body)
+            res.status(201).json(newUser)
+        }
+    }
+    catch (err) {
+        res.status(500).json({
+            message: "something bad happened",
+            error: err.message
+        })
+    }
+})
+
 module.exports = server; // EXPORT YOUR SERVER instead of {}
