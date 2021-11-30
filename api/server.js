@@ -69,4 +69,27 @@ server.post('/api/users', async (req, res) => {
     }
 })
 
+server.put('/api/users/:id', async (req, res) => {
+    const { id } = req.params
+    const { body } = req
+
+    try {
+        const updated = await Users.update(id,body)
+        if (!updated) {
+            res.status(400).json({
+                message: `${id} is not a valid user`
+            })
+        }
+        else {
+            res.json(updated)
+        }
+    }
+    catch (err) {
+        res.status(500).json({
+            message: "something bad happened",
+            error: err.message
+        })
+    }
+})
+
 module.exports = server; // EXPORT YOUR SERVER instead of {}
